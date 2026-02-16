@@ -103,7 +103,7 @@ function confirmFabricSelection(name, price, img) {
     document.getElementById('fabricModal').style.display = 'none';
 }
 
-// حساب الإجمالي
+//  الإجمالي
 function calcGrandTotal() {
     let t = readyCartTotal;
     document.querySelectorAll('.item-price').forEach(i => t += parseInt(i.value || 0));
