@@ -1,7 +1,32 @@
+// إضافة Firebase في بداية ملف script.js
+const firebaseConfig = { 
+    apiKey: "AIzaSyAT4_kbAgDL8Jw5V2jRj3mqyD-lA84ECjY",
+    databaseURL: "https://alyarmok-store-default-rtdb.firebaseio.com/",
+    projectId: "alyarmok-store-default-rtdb"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// مصفوفات البيانات التي ستملأ تلقائياً من Firebase
 let db = { fabrics: [], ready: [] };
-let tempImg = ""; 
-let receiptImg = "";
-let readyCartTotal = 0;
+
+// دالة جلب البيانات من Firebase فور فتح الموقع
+database.ref('products').on('value', (snapshot) => {
+    db.fabrics = [];
+    db.ready = [];
+    
+    snapshot.forEach((childSnapshot) => {
+        const product = childSnapshot.val();
+        if (product.cat === 'fabric') {
+            db.fabrics.push({ title: product.name, newPrice: product.price, img: product.img });
+        } else {
+            db.ready.push({ cat: 'thobe_r', title: product.name, newPrice: product.price, img: product.img });
+        }
+    });
+    
+    // تحديث العرض في المتجر فوراً
+    if(typeof filterReady === "function") filterReady('all');
+});
 
 // بوت ياقوت اليرموك
 function toggleYaqoot() {
